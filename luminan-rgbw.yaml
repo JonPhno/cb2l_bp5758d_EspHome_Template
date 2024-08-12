@@ -1,0 +1,58 @@
+esphome:
+  name: luminan-rgbw-X
+  friendly_name: Luminan_RGBW_X
+  on_boot:
+    priority: 600
+    then:
+      - light.turn_on:
+          id: light_rgbww
+          brightness: 100%
+          color_temperature: 2700K
+
+bk72xx:
+  board: cb2l
+
+bp5758d:
+  data_pin: 7
+  clock_pin: 8
+
+output:
+  - platform: bp5758d
+    id: output_red
+    channel: 3 # Valid values 1-5 to match OUT1-OUT5
+    current: 10 # In mA, valid values 0-90, default 10
+  - platform: bp5758d
+    id: output_green
+    channel: 1 # Valid values 1-5 to match OUT1-OUT5
+    current: 10 # In mA, valid values 0-90, default 10
+  - platform: bp5758d
+    id: output_blue
+    channel: 2 # Valid values 1-5 to match OUT1-OUT5
+    current: 10 # In mA, valid values 0-90, default 10
+  - platform: bp5758d
+    id: output_warm
+    channel: 4 # Valid values 1-5 to match OUT1-OUT5
+    current: 10 # In mA, valid values 0-90, default 10
+  - platform: bp5758d
+    id: output_cold
+    channel: 5 # Valid values 1-5 to match OUT1-OUT5
+    current: 10 # In mA, valid values 0-90, default 10
+
+light:
+  - platform: rgbww
+    id: light_rgbww
+    name: "Spot Salon 2"
+    red: output_red
+    green: output_green
+    blue: output_blue
+    cold_white: output_cold
+    warm_white: output_warm
+    cold_white_color_temperature: 6500 K
+    warm_white_color_temperature: 2700 K
+    color_interlock: True
+    effects:
+      - random:
+      - random:
+          name: Random Effect With Custom Values
+          transition_length: 5s
+          update_interval: 7s
